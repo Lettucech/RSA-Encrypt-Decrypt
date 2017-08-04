@@ -28,8 +28,15 @@ public class Main {
 			String decrypted = test.decryptWithBuffer(encrypted);
 			System.out.println("Decrypted String (" + decrypted.length() + "char): " + decrypted);
 			
+			for(int i = 0; i < decrypted.length(); i++) {
+				char c = decrypted.charAt(i);
+				if (c != 'A') {
+					System.out.println("Non-A char is found: " + String.valueOf(c));
+				}
+			}
+			
 			System.out.println("Is result correct? " + data.equals(decrypted));
-		} catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException | IOException e) {
+		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}

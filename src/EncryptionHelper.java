@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -63,7 +64,7 @@ public class EncryptionHelper {
 			encrypted.write(cipher.doFinal(buffer));
 		}
 
-		System.out.println("Encrypted bytes: " + encrypted.toByteArray().toString());
+		System.out.println("Encrypted bytes: " + encrypted.toByteArray().length);
 		return new String(Base64.getEncoder().encode(encrypted.toByteArray()));
 	}
 
@@ -86,11 +87,15 @@ public class EncryptionHelper {
 		
 		while (dataBytes.available() > 0) {
 			byte[] buffer = new byte[blockSize];
-			dataBytes.read(buffer);
-			decrypted.write(cipher.doFinal(buffer));
+			dataBytes.read(buffer, 0, blockSize);
+			for (byte b: cipher.doFinal(buffer)) {
+				if (b != 0x00) {
+					decrypted.write(b);
+				}
+			}
 		}
 
-		System.out.println("Decrypted bytes: " + decrypted.toByteArray().toString());
+		System.out.println("Decrypted bytes: " + decrypted.toByteArray().length);
 		return new String(decrypted.toByteArray(), "UTF-8");
 	}
 }
