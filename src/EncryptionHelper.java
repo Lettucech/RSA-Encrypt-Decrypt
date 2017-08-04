@@ -55,10 +55,7 @@ public class EncryptionHelper {
 		ByteArrayOutputStream encrypted = new ByteArrayOutputStream();
 
 		while (dataBytes.available() > 0) {
-			int bufferSize = dataBytes.available() >= blockSize
-					? blockSize
-					: blockSize - dataBytes.available();
-			byte[] buffer = new byte[bufferSize];
+			byte[] buffer = new byte[blockSize];
 			dataBytes.read(buffer);
 			encrypted.write(cipher.doFinal(buffer));
 		}
@@ -77,15 +74,12 @@ public class EncryptionHelper {
 	public String decryptWithBuffer(String data)
 			throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException {
 		cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
-		int blockSize = KEY_SIZE / 8 - 11;
+		int blockSize = KEY_SIZE / 8;
 		ByteArrayInputStream dataBytes = new ByteArrayInputStream(Base64.getDecoder().decode(data));
 		ByteArrayOutputStream decrypted = new ByteArrayOutputStream();
 
 		while (dataBytes.available() > 0) {
-			int bufferSize = dataBytes.available() >= blockSize
-					? blockSize
-					: blockSize - dataBytes.available();
-			byte[] buffer = new byte[bufferSize];
+			byte[] buffer = new byte[blockSize];
 			dataBytes.read(buffer);
 			decrypted.write(cipher.doFinal(buffer));
 		}

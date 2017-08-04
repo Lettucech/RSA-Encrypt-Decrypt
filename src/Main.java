@@ -13,13 +13,22 @@ public class Main {
 		EncryptionHelper test = EncryptionHelper.newInstance();
 		
 		try {
-			String data = RandomString.randomString(300);
+//			String data = RandomString.randomString(300);
+			String data = new String();
+			
+			for (int i = 0; i < 300; i++) {
+				data += "A";
+			}
+			
+			System.out.println("Start Encrypt: " + data);
+			
 			String encrypted = test.encryptWithBuffer(data);
-			System.out.println(encrypted.substring(0,10) + " + " + String.valueOf(encrypted.length() - 10));
+			System.out.println("Encrpted String: " + encrypted);
+			
 			String decrypted = test.decryptWithBuffer(encrypted);
-			System.out.println(decrypted);
-		} catch (InvalidKeyException | IllegalBlockSizeException
-				| BadPaddingException | IOException e) {
+			System.out.println("Decrypted String: " + decrypted);
+			
+		} catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException | IOException e) {
 			System.out.println(e.toString());
 		}
 	}
