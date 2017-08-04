@@ -3,6 +3,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -54,12 +55,15 @@ public class EncryptionHelper {
 		ByteArrayInputStream dataBytes = new ByteArrayInputStream(data.getBytes("UTF-8"));
 		ByteArrayOutputStream encrypted = new ByteArrayOutputStream();
 
+		System.out.println("Bytes to be encrypted: " + dataBytes.available());
+		
 		while (dataBytes.available() > 0) {
 			byte[] buffer = new byte[blockSize];
 			dataBytes.read(buffer);
 			encrypted.write(cipher.doFinal(buffer));
 		}
 
+		System.out.println("Encrypted bytes: " + encrypted.toByteArray().toString());
 		return new String(Base64.getEncoder().encode(encrypted.toByteArray()));
 	}
 
@@ -78,12 +82,15 @@ public class EncryptionHelper {
 		ByteArrayInputStream dataBytes = new ByteArrayInputStream(Base64.getDecoder().decode(data));
 		ByteArrayOutputStream decrypted = new ByteArrayOutputStream();
 
+		System.out.println("Bytes to be decrypted: " + dataBytes.available());
+		
 		while (dataBytes.available() > 0) {
 			byte[] buffer = new byte[blockSize];
 			dataBytes.read(buffer);
 			decrypted.write(cipher.doFinal(buffer));
 		}
 
-		return new String(decrypted.toByteArray());
+		System.out.println("Decrypted bytes: " + decrypted.toByteArray().toString());
+		return new String(decrypted.toByteArray(), "UTF-8");
 	}
 }

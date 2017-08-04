@@ -20,14 +20,15 @@ public class Main {
 				data += "A";
 			}
 			
-			System.out.println("Start Encrypt: " + data);
+			System.out.println("Start Encrypt (" + data.length() + "char): " + data);
 			
 			String encrypted = test.encryptWithBuffer(data);
 			System.out.println("Encrpted String: " + encrypted);
 			
 			String decrypted = test.decryptWithBuffer(encrypted);
-			System.out.println("Decrypted String: " + decrypted);
+			System.out.println("Decrypted String (" + decrypted.length() + "char): " + decrypted);
 			
+			System.out.println("Is result correct? " + data.equals(decrypted));
 		} catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException | IOException e) {
 			System.out.println(e.toString());
 		}
